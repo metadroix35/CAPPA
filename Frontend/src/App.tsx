@@ -39,10 +39,15 @@ function App() {
       const formData = new FormData();
       formData.append('image', selectedFile);
 
-      const response = await fetch('http://localhost:4000/api/caption', {
-        method: 'POST',
-        body: formData,
+      const BACKEND =
+      import.meta.env.VITE_BACKEND_URL ??
+      'https://cappa-backend-sfy0.onrender.com';
+
+      const response = await fetch(`${BACKEND}/api/caption`, {
+      method: 'POST',
+      body: formData,
       });
+
 
       if (!response.ok) {
         throw new Error('Failed to generate captions');
