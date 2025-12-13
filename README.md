@@ -4,7 +4,7 @@ An end-to-end **full-stack AI application** that generates creative travel capti
 
 🚀 **Live Demo**
 
-* **Frontend:** [https://your-vercel-url.vercel.app](https://your-vercel-url.vercel.app)
+* **Frontend:** [https://cappa-nu.vercel.app](https://cappa-nu.vercel.app/)
 * **Backend API:** [https://cappa-backend-sfy0.onrender.com](https://cappa-backend-sfy0.onrender.com)
 
 ---
