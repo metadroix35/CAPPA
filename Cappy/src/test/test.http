@@ -1,0 +1,11 @@
+POST http://localhost:4000/api/caption
+Content-Type: multipart/form-data; boundary=----BOUNDARY
+
+------BOUNDARY
+
+Content-Disposition: form-data; name="image"; filename="img.jpg"
+Content-Type: image/jpeg
+
+< C:\Users\KIIT0001\Pictures\Screenshots\Screenshot 2025-07-08 161350.png
+
+------BOUNDARY--
