@@ -77,7 +77,7 @@ function App() {
       <div className="container mx-auto px-4 py-12">
         <div className="text-center mb-12">
           <div className="inline-block bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text mb-4">
-            <h1 className="text-5xl font-bold">AI Travel Caption Generator</h1>
+            <h1 className="text-5xl font-bold">CAPPA</h1>
           </div>
           <p className="text-gray-600 text-lg max-w-2xl mx-auto">
             Upload your travel photos and get creative captions powered by AI
