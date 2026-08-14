@@ -211,8 +211,8 @@ public class OpenAI {
 
         JSONObject body = new JSONObject()
                 .put("model", "gpt-4o-mini")   // or gpt-4o
-                .put("messages", messages);
-               // .put("max_output_tokens", 150);
+                .put("messages", messages)
+                .put("response_format", new JSONObject().put("type", "json_object"));
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("https://api.openai.com/v1/chat/completions"))

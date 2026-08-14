@@ -54,12 +54,27 @@ function App() {
       }
 
       const data = await response.json();
-      setCaptions(data.captions);
-    } catch (err) {
+      
+      if (data.captions) {
+        setCaptions(data.captions);
+      } else {
+        // Backend couldn't parse captions, likely due to an OpenAI error
+        let errorMessage = 'Failed to generate valid captions from the image.';
+        if (data.raw) {
+          try {
+            const rawJson = JSON.parse(data.raw);
+            if (rawJson.error && rawJson.error.message) {
+              errorMessage = `OpenAI API Error: ${rawJson.error.message}`;
+            }
+          } catch (e) {
+            errorMessage = `Backend Error: ${data.raw}`;
+          }
+        }
+        throw new Error(errorMessage);
+      }
+    } catch (err: any) {
       console.error('Error generating captions:', err);
-      setError(
-        'Unable to connect to the backend server. Please make sure the server is running on http://localhost:4000'
-      );
+      setError(err.message || 'Unable to connect to the backend server. Please make sure the server is running on http://localhost:4000');
     } finally {
       setLoading(false);
     }
