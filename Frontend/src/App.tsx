@@ -86,10 +86,11 @@ function App() {
 
       // Load the image-to-text pipeline (runs completely in-browser)
       const captioner = await pipeline('image-to-text', 'Xenova/vit-gpt2-image-captioning', {
-        progress_callback: (progress: any) => {
-          if (progress.status === 'downloading') {
-            setLoadingStatus(`Downloading model weights... ${Math.round(progress.progress || 0)}%`);
-          } else if (progress.status === 'init') {
+        progress_callback: (progress: unknown) => {
+          const p = progress as { status: string; progress?: number };
+          if (p.status === 'downloading') {
+            setLoadingStatus(`Downloading model weights... ${Math.round(p.progress || 0)}%`);
+          } else if (p.status === 'init') {
             setLoadingStatus('Initializing model...');
           }
         }
@@ -100,7 +101,7 @@ function App() {
       
       let caption = "A beautiful scene.";
       if (Array.isArray(result) && result.length > 0) {
-          caption = (result[0] as any).generated_text || caption;
+          caption = (result[0] as Record<string, string>).generated_text || caption;
       }
 
       // Format it as a simple "story" since small client-side models just give raw captions.
@@ -109,9 +110,10 @@ function App() {
       setStory(generatedStory);
       URL.revokeObjectURL(imageUrl);
 
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error generating story:', err);
-      setError(err.message || 'Failed to run client-side AI model.');
+      const errorMessage = err instanceof Error ? err.message : 'Failed to run client-side AI model.';
+      setError(errorMessage);
     } finally {
       setLoading(false);
       setLoadingStatus('');
