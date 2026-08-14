@@ -2,11 +2,12 @@ import { useState, useRef } from 'react';
 import type { DragEvent, ChangeEvent } from 'react';
 
 interface ImageUploadProps {
-  onImageSelect: (file: File) => void;
+  onImageSelect: (file: File, isVideo: boolean, videoDataUrl?: string) => void;
   preview: string | null;
+  isVideo?: boolean;
 }
 
-export default function ImageUpload({ onImageSelect, preview }: ImageUploadProps) {
+export default function ImageUpload({ onImageSelect, preview, isVideo }: ImageUploadProps) {
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -29,16 +30,21 @@ export default function ImageUpload({ onImageSelect, preview }: ImageUploadProps
     if (files && files[0]) {
       const file = files[0];
       if (file.type.startsWith('image/')) {
-        onImageSelect(file);
+        onImageSelect(file, false);
+      } else if (file.type.startsWith('video/')) {
+        onImageSelect(file, true);
       }
     }
   };
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files && files[0]) {
-      onImageSelect(files[0]);
-    }
+      const file = files[0];
+      if (file.type.startsWith('image/')) {
+        onImageSelect(file, false);
+      } else if (file.type.startsWith('video/')) {
+        onImageSelect(file, true);
+      }
   };
 
   const handleClick = () => {
@@ -86,28 +92,36 @@ export default function ImageUpload({ onImageSelect, preview }: ImageUploadProps
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/jpg"
+            accept="image/jpeg,image/png,image/jpg,video/mp4,video/webm,video/quicktime"
             onChange={handleFileChange}
             className="hidden"
           />
         </div>
       ) : (
-        <div className="relative rounded-lg overflow-hidden shadow-lg">
-          <img
-            src={preview}
-            alt="Preview"
-            className="w-full h-auto max-h-96 object-cover"
-          />
+        <div className="relative rounded-lg overflow-hidden shadow-lg bg-black flex justify-center items-center h-96">
+          {isVideo ? (
+            <video
+              src={preview}
+              controls
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-full h-full object-cover"
+            />
+          )}
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="absolute top-4 right-4 bg-white text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 transition-colors duration-200"
+            className="absolute top-4 right-4 bg-white text-gray-700 px-4 py-2 rounded-lg shadow-md hover:bg-gray-100 transition-colors duration-200 z-10"
           >
-            Change Image
+            Change File
           </button>
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/jpg"
+            accept="image/jpeg,image/png,image/jpg,video/mp4,video/webm,video/quicktime"
             onChange={handleFileChange}
             className="hidden"
           />
