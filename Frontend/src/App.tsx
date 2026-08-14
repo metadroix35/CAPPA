@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { pipeline, env } from '@xenova/transformers';
 import ImageUpload from './components/ImageUpload';
 import Loader from './components/Loader';
@@ -100,7 +100,7 @@ function App() {
       
       let caption = "A beautiful scene.";
       if (Array.isArray(result) && result.length > 0) {
-          caption = result[0].generated_text || caption;
+          caption = (result[0] as any).generated_text || caption;
       }
 
       // Format it as a simple "story" since small client-side models just give raw captions.

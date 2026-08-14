@@ -27,7 +27,7 @@ export default function ImageUpload({ onImageSelect, preview, isVideo }: ImageUp
     setIsDragging(false);
 
     const files = e.dataTransfer.files;
-    if (files && files[0]) {
+    if (files && files.length > 0) {
       const file = files[0];
       if (file.type.startsWith('image/')) {
         onImageSelect(file, false);
@@ -39,12 +39,14 @@ export default function ImageUpload({ onImageSelect, preview, isVideo }: ImageUp
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
+    if (files && files.length > 0) {
       const file = files[0];
       if (file.type.startsWith('image/')) {
         onImageSelect(file, false);
       } else if (file.type.startsWith('video/')) {
         onImageSelect(file, true);
       }
+    }
   };
 
   const handleClick = () => {
